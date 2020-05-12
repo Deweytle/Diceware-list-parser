@@ -1,20 +1,22 @@
 import json
-dicewareList = []
+import os
 
-file = open('eff_large_wordlist.txt', 'r', encoding='utf-8')
-for line in file:
-    lineElements = line.split()
-    lineDictionnary = {
-        'dices': lineElements[0],
-        'value': lineElements[1]
-    }
-    dicewareList.append(lineDictionnary)
+inputPath = os.path.join(os.getcwd(),'Input')
 
-try:
-    with open('eff_large_wordlist.json','w') as outfile:
-        json.dump(dicewareList,outfile)
-except error:
-    print(error)
-
-#Cleanup
-file.close()
+for file in os.listdir(inputPath):
+    dicewareList = []
+    with open(os.path.join(inputPath, file), 'r', encoding='utf-8') as content:
+        for line in content:
+            lineElements = line.split()
+            lineDictionnary = {
+                'dices': lineElements[0],
+                'value': lineElements[1]
+            }
+            dicewareList.append(lineDictionnary)
+    try:
+        outputName = f'{os.path.splitext(file)[0]}.json'
+        with open(f'./Output/{outputName}','w') as outfile:
+            json.dump(dicewareList,outfile)
+        print(f'{outputName} created')
+    except error:
+        print(error)
